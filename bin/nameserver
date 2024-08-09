@@ -1,0 +1,44 @@
+#!/usr/bin/bash
+
+#   1   handling arg cli
+#   2   check every 1 minute 
+#           -   json data (metadata, filemap)
+#           -   update block (delete if unused)
+#           -   (optional) add update json functionality to update json in server
+#                          it will make edfs command can be run on every nameserver 
+
+# start
+# status
+# stop
+echo $EDFS_HOME
+
+nameserver_webserver=$(echo $PWD/../lib/nameserver_webserver.py)
+nameserver_out=$(echo $PWD/../log/nameserver.out)
+nameserver_log=$(echo $PWD/../log/nameserver.log)
+nameserver_pid=$(echo $PWD/../pid/nameserver.pid)
+
+init=$(echo $PWD/../lib/init.py)
+
+if [ $1 = 'start' ]; then
+    eval "$nameserver_webserver 1> $nameserver_out 2> $nameserver_log &"
+    echo "$!" > $nameserver_pid
+    pid=$(cat $nameserver_pid)
+    eval "$init update"
+
+    echo "nameserver started on PID : ${pid}"
+elif [ $1 = 'status' ]; then
+    if [ -f $nameserver_pid ]; then
+        pid=$(cat $nameserver_pid)
+        echo "nameserver starting on PID ${pid}"
+    else
+        echo "nameserver stop"
+    fi
+elif [ $1 = 'stop' ]; then
+    pid=$(cat $nameserver_pid)
+    eval "kill $pid"
+    eval "rm -rf $nameserver_pid"
+    echo "stop"
+else
+    echo "Command not found use : { start | status | stop }"
+fi
+

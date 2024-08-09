@@ -1,0 +1,73 @@
+/usr/bin/local/edfs          to handle edfs command and run edfs.py
+bin/
+    - edfs.py                 parameter controller 
+    - nameserver.py           name space controler
+    - datanode.py             data node
+lib/
+    - core.py		create edfs object that contain core functionality
+    - yaml_parser.py    yaml parser create CONFIG object
+    - json_parser.py    json parser create and extraction 
+    - block_handler.py   to mapping file and chunk into a block
+    - nameserver.py     nameserver connection to datanode (flask)
+    - datanode.py      datanode connection to nameserver (flask)
+    
+    - init.py           init functionality
+    - watcher.py        monitoring json from nameserver and update the local datanode json
+
+lib_ext/                    content external lib that needed
+conf/
+    - edfs_env.sh       env variable
+    - edfs_config.yaml  config for edfs 
+data/
+    - block1
+    - block2
+    - block3
+metadata/
+    - map.json
+    - stat.json     containing md5 of every chunk
+===
+
+EDFS parameter
+edfs
+    - init          distribute repo to datanode host and install
+    
+    - ls <dir>      listing content of dir if only ls it will print all in /
+    - ls -r         same with ls but recursively
+    - rm            remove <will show confirmation about the action>
+    - rm -f         force remove 
+    - put </local/dir/to/file> </full/path/to/edfs/dir> 
+    - get </path/to/edfs/file>  -o </local/path> download from edfs to local
+    - mkdir </full/path/to/newDir>
+
+nameserver    start | status | stop | (optional) start-all-datanode | status-all-datanode | stop-all-datanode -> only on nameserver host
+datanode      start | status | stop
+
+
+
+===
+
+function
+
+server
+    - distribute chunk (put) -> nameserver upload to datanode
+    - collecting chunk (get) -> nameserver download from datanode, and re-unite chunk to complete file
+    - remove edfs file (json and chunk) -> remove chunk from datanode then remove the json data
+    - mkdir edfs    ->  add to json
+
+client
+    - get chunk from nameserver
+    - serve chunk when nameserver need
+    - remove chunk when some data from json removed
+    - dif local json to nameserver json (opt : diff md5 to check the file health)
+
+===
+
+API
+
+server
+    - /api/metadata/<json>   GET    updateJsonMap()
+
+client
+    - /api/chunk/<name>             POST    uploadChunk()
+    - /api/chunk/<name>             GET     downloadChunk()
+
