@@ -5,6 +5,8 @@ import sys
 
 edfs_home = os.environ["EDFS_HOME"]
 lib_dir = os.path.join(edfs_home, "lib/")
+
+sys.path.append(edfs_home)
 sys.path.append(lib_dir)
 
 from core import EDFS

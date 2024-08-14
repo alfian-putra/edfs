@@ -1,0 +1,15 @@
+# nameserver host
+nameserver_host: localhost
+
+# nameserver port
+nameserver_port: 8080
+
+# blocksize in mb
+blocksize: 1
+
+# datanode port
+datanode_port: 3000
+
+# datanode host list
+datanode_host :
+  - localhost
