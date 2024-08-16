@@ -15,7 +15,7 @@ edfs_config = os.path.join(edfs_home, "conf", "edfs_config.yaml")
 sys.path.append(pwd)
 sys.path.append(edfs_home)
 
-from lib_ext import yaml
+import yaml
 
 class CONFIG():
     def __init__(self):

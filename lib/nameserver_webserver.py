@@ -9,8 +9,8 @@ lib_dir = os.path.join(edfs_home, "lib/")
 sys.path.append(lib_dir)
 sys.path.append(edfs_home)
 
-from lib_ext.flask import Flask, render_template, jsonify
-from lib_ext.flask import url_for
+from flask import Flask, render_template, jsonify
+from flask import url_for
 from yaml_parser import CONFIG
 
 config = CONFIG()
@@ -31,4 +31,4 @@ def updateJsonMap(jsonFile):
 
 
 if __name__ == '__main__':
-    app.run(debug=True, port=config.nameserver_port)
+    app.run(debug=True, host="0.0.0.0", port=config.nameserver_port)

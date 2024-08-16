@@ -12,12 +12,12 @@
 # stop
 echo $EDFS_HOME
 
-nameserver_webserver=$(echo $PWD/../lib/nameserver_webserver.py)
-nameserver_out=$(echo $PWD/../log/nameserver.out)
-nameserver_log=$(echo $PWD/../log/nameserver.log)
-nameserver_pid=$(echo $PWD/../pid/nameserver.pid)
+nameserver_webserver=$(echo $EDFS_HOME/lib/nameserver_webserver.py)
+nameserver_out=$(echo $EDFS_HOME/log/nameserver.out)
+nameserver_log=$(echo $EDFS_HOME/log/nameserver.log)
+nameserver_pid=$(echo $EDFS_HOME/pid/nameserver.pid)
 
-init=$(echo $PWD/../lib/init.py)
+init=$(echo $EDFS_HOME/init.py)
 
 if [ $1 = 'start' ]; then
     eval "$nameserver_webserver 1> $nameserver_out 2> $nameserver_log &"

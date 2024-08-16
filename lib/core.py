@@ -10,7 +10,7 @@ edfs_home = os.environ["EDFS_HOME"]
 #add pythonpath
 sys.path.append(pwd)
 sys.path.append(edfs_home)
-import lib_ext.yaml
+import yaml
 
 from json_parser import METADATA, HOSTMAP, FILEMAP
 from yaml_parser import CONFIG

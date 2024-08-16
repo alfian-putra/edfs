@@ -12,10 +12,10 @@
 # stop
 echo $EDFS_HOME
 
-datanode_webserver=$(echo $PWD/../lib/datanode_webserver.py)
-datanode_out=$(echo $PWD/../log/datanode.out)
-datanode_log=$(echo $PWD/../log/datanode.log)
-datanode_pid=$(echo $PWD/../pid/datanode.pid)
+datanode_webserver=$(echo $EDFS_HOME/lib/datanode_webserver.py)
+datanode_out=$(echo $EDFS_HOME/log/datanode.out)
+datanode_log=$(echo $EDFS_HOME/log/datanode.log)
+datanode_pid=$(echo $EDFS_HOME/pid/datanode.pid)
 
 if [ $1 = 'start' ]; then
     eval "$datanode_webserver 1> $datanode_out 2> $datanode_log &"

@@ -10,8 +10,8 @@ lib_dir = os.path.join(edfs_home, "lib/")
 sys.path.append(lib_dir)
 sys.path.append(edfs_home)
 
-from lib_ext.flask import Flask, flash, request, redirect, url_for, send_from_directory, send_file
-from lib_ext.werkzeug.utils import secure_filename
+from flask import Flask, flash, request, redirect, url_for, send_from_directory, send_file
+from werkzeug.utils import secure_filename
 from yaml_parser import CONFIG
 
 config = CONFIG()
@@ -67,4 +67,4 @@ def rm_file(filename):
 
 
 if __name__ == '__main__':
-    app.run(debug=True, port=config.datanode_port)
+    app.run(debug=True, host="0.0.0.0", port=config.datanode_port)
