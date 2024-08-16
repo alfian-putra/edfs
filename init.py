@@ -93,7 +93,8 @@ class INIT():
         datanode_builddir = os.path.join(parent_dir, "datanode/")
 
         #list needed package
-        ls_pkg = ["bin","conf","example","lib","data","log","metadata","pid","requirements"]
+        ls_pkg = ["bin","conf","example","lib","data","log","metadata","pid"]
+        ls_file = ["requirements"]
 
         #ignored file in datanode
         ls_datanode_ignore = ["bin/nameserver", "bin/edfs.py"]
@@ -107,16 +108,26 @@ class INIT():
             full_datanode_builddir = os.path.join(datanode_builddir,i)
             copy_dir(fullpath, full_datanode_builddir)
 
-        # 3. datanode : remove unused
+        # 3. copy file
+        for i in  ls_file:
+            fullpath = os.path.join(parent_dir, i)
+            full_datanode_builddir = os.path.join(datanode_builddir,i)
+            copy_file(fullpath, full_datanode_builddir)
+
+        # 4. datanode : remove unused
         for i in ls_datanode_ignore:
             fullpath = os.path.join(datanode_builddir,i)
             remove(fullpath)
 
-        # 4. create tarbal
+        # 5. create tarbal
         tarbal = tarfile.open("datanode.tar.gz", "w")
         for elm in ls_pkg:
             fullpath = os.path.join("datanode/",elm)
             tarbal.add(fullpath)
+        for elm in ls_file:
+            fullpath = os.path.join("datanode/",elm)
+            tarbal.add(fullpath)
+
         tarbal.close()
         shutil.rmtree("datanode/")
     
@@ -139,7 +150,7 @@ class INIT():
             # ssh tar -xvf /opt/datanode.tar.gz
             _ssh(host, "tar -xvf /opt/datanode.tar.gz -C /opt/")
             # ssh cp -r /opt/datanode/* {edfs_home}
-            _ssh(host, f"cp /opt/datanode/* {self.conf.edfs_home}")
+            _ssh(host, f"cp -r /opt/datanode/* {self.conf.edfs_home}")
             # ssh rm -rf /opt/datanode/ datanode.tar.gz
             _ssh(host, "rm -rf /opt/datanode /opt/datanode.tar.gz")            
 
@@ -148,7 +159,6 @@ class INIT():
                 continue
             distribute_to_host(host)
         
-        _ssh(self.nameserver_host, f"rm -rf {self.edfs_home}/datanode*")
 
     def init_dir(self):
         ls = ["data","metadata","log","pid"]
@@ -164,10 +174,17 @@ class INIT():
         self.init_datanode_tarbal()
 
     def init_cluster(self):
-        self.init_all_host()
-        self.init_dir()
-        self.init_json()
-        self.distribute_datanode()
+        try:
+            self.init_dir()
+            self.init_json()
+            self.distribute_datanode()
+            self.init_all_host()
+        except Exception as e:
+            print(f"ERROR : {e}")
+        else:
+            print("Init complete !")
+        finally:
+            run_cmd = subprocess.run("rm -rf datanode datanode.tar.gz".split(" "))
 
 class UPDATE():
     def __init__(self):
