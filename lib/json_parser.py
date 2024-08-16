@@ -2,7 +2,7 @@
 import json
 import os
 
-json_path = os.path.join(os.getcwd(), "../metadata")
+json_path = os.path.join(os.environ["EDFS_HOME"], "metadata")
 metadata_json_file = os.path.join(json_path, "metadata.json")
 hostmapping_json_file = os.path.join(json_path, "hostmapping.json")
 filemapping_json_file = os.path.join(json_path, "filemapping.json")

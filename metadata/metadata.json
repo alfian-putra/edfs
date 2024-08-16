@@ -1,0 +1,12 @@
+{
+  "files": [
+    {
+      "name": "/",
+      "type": "directory"
+    },
+    {
+      "name": "/example/",
+      "type": "directory"
+    }
+  ]
+}

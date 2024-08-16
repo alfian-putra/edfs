@@ -1,5 +1,5 @@
 # nameserver host
-nameserver_host: localhost
+nameserver_host: n20.playground.id
 
 # nameserver port
 nameserver_port: 8080
@@ -12,4 +12,5 @@ datanode_port: 3000
 
 # datanode host list
 datanode_host :
-  - localhost
+  - n20.playground.id
+  - n21.playground.id
