@@ -1,1 +1,1 @@
-export EDFS_HOME="/opt/edfs/"
+export EDFS_HOME=""

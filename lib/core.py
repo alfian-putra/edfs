@@ -55,6 +55,7 @@ class CORE():
         filepath = filepath[:filepath.rfind("/")] + "/"
         #print("tes : "+filepath)
         self.is_exist(filepath)
+
     ## item name
     def add(self, item):
         self.add_to_json(item)
@@ -94,6 +95,11 @@ class EDFS(CORE):
             raise Exception(f"parent dir does not exist !")
             return False
         
+        ### exist as a dir will throw an error
+        if self.is_exist(edfs_file+"/"):
+            raise Exception(f"{edfs_file} exist as a directory !")
+            return False
+
         ### check local file exist
         if not os.path.exists(filename):
             raise Exception(f"{filename} not found !")

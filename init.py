@@ -194,14 +194,17 @@ class UPDATE():
     def update_json(self):
         lsjson = ["filemapping", "hostmapping","metadata"]
 
-        def _read_json_api(filename):
-            return self.con_handler.nameserver_json(filename).decode("utf-8")
+        #def _read_json_api(filename):
+        #    return self.con_handler.nameserver_json(filename).decode("utf-8")
 
-        def _write_to_json(filename, content):
+        def _write_to_json(filename):
             filename = filename + ".json"
-            f = open(filename, "w")
-            f.write(content)
-            f.close()
+            for host in self.conf.datanode_host:
+                if host==self.conf.nameserver_host:
+                    continue
+                cmd = f'scp {filename} root@{host}:{filename}'
+                run_cmd = subprocess.run(cmd.split(" "))
+
             return
         
         def _json_name(name):
@@ -209,8 +212,9 @@ class UPDATE():
 
         for n in lsjson:
             fullpath = _json_name(n)
-            data = _read_json_api(n)
-            _write_to_json(fullpath, data)
+            #data = _read_json_api(n)
+            print(fullpath)
+            _write_to_json(fullpath)
 
     def update_config(self):
         datanode = self.conf.datanode_host
@@ -218,6 +222,8 @@ class UPDATE():
         conf_path = os.path.join(self.conf.edfs_home, "conf/edfs_config.yaml")
 
         for host in datanode:
+            if host==self.conf.nameserver_host:
+                continue
             cmd1 = f'scp {env_path} root@{host}:{env_path}'
             run_cmd1 = subprocess.run(cmd1.split(" "))
 
